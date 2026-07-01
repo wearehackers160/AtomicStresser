@@ -24,6 +24,11 @@
     "tailwind-merge": "^3.3.0",
     "tailwindcss-animate": "^1.0.7"
   },
+  "overrides": {
+    "next": "15.1.7",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@eslint/eslintrc": "^3.3.1",
