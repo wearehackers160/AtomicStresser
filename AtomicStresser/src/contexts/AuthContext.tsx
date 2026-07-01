@@ -26,8 +26,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
   // Função para verificar se o token é válido
   const checkAuth = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const admin = JSON.parse(localStorage.getItem('admin') || 'false'); // <-- add isso
+      const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+      const adminValue = typeof window !== 'undefined' ? localStorage.getItem('admin') : null;
+      let admin = false;
+      try {
+        admin = adminValue ? JSON.parse(adminValue) : false;
+      } catch (e) {
+        console.error("Failed to parse admin status", e);
+      }
 
       if (!token) {
         setIsLogged(false);
@@ -42,15 +48,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setIsLogged(true);
         setIsAdmin(admin); // <-- define com base no localStorage
       } else {
-        localStorage.removeItem('token');
-        localStorage.removeItem('admin'); // limpa admin também
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('token');
+          localStorage.removeItem('admin');
+        }
         setIsLogged(false);
         setIsAdmin(false);
       }
     } catch (error) {
       console.error('Erro ao verificar autenticação:', error);
-      localStorage.removeItem('token');
-      localStorage.removeItem('admin');
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('token');
+        localStorage.removeItem('admin');
+      }
       setIsLogged(false);
       setIsAdmin(false);
     } finally {
@@ -61,19 +71,27 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // Função para fazer login
   const login = (token: string) => {
-    localStorage.setItem('token', token);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('token', token);
+    }
     setIsLogged(true);
   };
 
   const admin = (value: boolean) => {
-    localStorage.setItem('admin', JSON.stringify(value));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('admin', JSON.stringify(value));
+    }
     setIsAdmin(value);
   };
 
   // Função para fazer logout
   const logout = () => {
-    localStorage.removeItem('token');
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('token');
+      localStorage.removeItem('admin');
+    }
     setIsLogged(false);
+    setIsAdmin(false);
   };
 
   // Verificar autenticação ao montar o componente
