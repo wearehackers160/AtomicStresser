@@ -18,9 +18,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'npm'
+          # Removed the cache option so it doesn't crash looking for a lockfile
 
-      - name: Install Dependencies
+      - name: Install Tailwind v4 PostCSS Plugin
+        run: npm install -D @tailwindcss/postcss autoprefixer postcss
+
+      - name: Install Project Dependencies
         run: npm install
 
       - name: Run Production Build (Turbopack Verification)
