@@ -1,8 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
+@import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@theme {
+  /* Define your missing utility tokens for Tailwind v4 */
+  --color-background: #1a1a1c; /* Default fallback dark background; adjust hex to match your layout */
+  --color-text: #ffffff;       /* Default text color; adjust hex to match your layout */
+  --font-sans: 'Nunito', sans-serif;
+}
 
 body {
   @apply bg-background text-text font-sans;
@@ -39,7 +43,6 @@ body {
   z-index: 1031;
   top: 0;
   left: 0;
-
   width: 100%;
   height: 3px;
 }
@@ -52,8 +55,7 @@ body {
   height: 100%;
   box-shadow: 0 0 10px #3b82f6, 0 0 5px #3b82f6;
   opacity: 1.0;
-
   -webkit-transform: rotate(3deg) translate(0px, -4px);
-      -ms-transform: rotate(3deg) translate(0px, -4px);
-          transform: rotate(3deg) translate(0px, -4px);
+  -ms-transform: rotate(3deg) translate(0px, -4px);
+  transform: rotate(3deg) translate(0px, -4px);
 }
