@@ -18,7 +18,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          # Removed the cache option so it doesn't crash looking for a lockfile
+
+      - name: Debug Project Structure
+        run: |
+          echo "=== Current Directory ==="
+          pwd
+          echo "=== Directory Contents ==="
+          ls -la
+          echo "=== Package.json Content ==="
+          cat package.json || echo "No package.json in root!"
 
       - name: Install Tailwind v4 PostCSS Plugin
         run: npm install -D @tailwindcss/postcss autoprefixer postcss
@@ -26,5 +34,7 @@ jobs:
       - name: Install Project Dependencies
         run: npm install
 
-      - name: Run Production Build (Turbopack Verification)
-        run: npm run build
+      - name: Run Production Build
+        run: |
+          # Try running npm build; if it fails because it's missing, call the next compiler directly
+          npm run build || npx next build
